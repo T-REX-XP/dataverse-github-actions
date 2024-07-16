@@ -7,7 +7,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.TOKEN }}
   buildVersion: ${{ github.run_number }}
   buildType: Release
-
+  version: 1.0.0
 jobs:
   build:
     runs-on: windows-latest
@@ -23,7 +23,7 @@ jobs:
         id: parse_version
         run: |
           $tag = "${{ github.ref_name }}"
-          if ($tag -match "v(\d+)\.(\d+)\.(\d+)\.(\d+)") {
+          if ($tag -match "v(\d+)\.(\d+)\.(\d+)") {
             echo "##[set-output name=major;]$($matches[1])"
             echo "##[set-output name=minor;]$($matches[2])"
             echo "##[set-output name=patch;]$($matches[3])"
@@ -33,6 +33,8 @@ jobs:
       - name: Update Solution Version
         run: |
           $version = "${{ steps.parse_version.outputs.major }}.${{ steps.parse_version.outputs.minor }}.${{ steps.parse_version.outputs.patch }}.${{ env.buildVersion }}"
+          Write-Host "##[set-output name=version;]$version"
+          Write-Host "Current version: $version"
           $xml = [xml](Get-Content package/other/Solution.xml)
           $xml.ImportExportXml.SolutionManifest.Version = $version
           $xml.Save("package/other/Solution.xml")
