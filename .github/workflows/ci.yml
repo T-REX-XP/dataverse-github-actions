@@ -5,9 +5,6 @@ on:
     types: [published]
 env:
   GITHUB_TOKEN: ${{ secrets.TOKEN }}
-  #version
-  majorVersion: 1
-  minorVersion: 0
   buildVersion: ${{ github.run_number }}
   buildType: Release
 
@@ -21,6 +18,25 @@ jobs:
 
       - name: Install Power Platform Tools
         uses: microsoft/powerplatform-actions/actions-install@v1
+      
+      - name: Parse version from tag
+        id: parse_version
+        run: |
+          $tag = "${{ github.ref_name }}"
+          if ($tag -match "v(\d+)\.(\d+)\.(\d+)\.(\d+)") {
+            echo "##[set-output name=major;]$($matches[1])"
+            echo "##[set-output name=minor;]$($matches[2])"
+            echo "##[set-output name=patch;]$($matches[3])"
+          }
+        shell: pwsh
+
+      - name: Update Solution Version
+        run: |
+          $version = "${{ steps.parse_version.outputs.major }}.${{ steps.parse_version.outputs.minor }}.${{ steps.parse_version.outputs.patch }}.${{ env.buildVersion }}"
+          $xml = [xml](Get-Content package/other/Solution.xml)
+          $xml.ImportExportXml.SolutionManifest.Version = $version
+          $xml.Save("package/other/Solution.xml")
+        shell: pwsh
 
       - name: Get Solution Unique Name
         id: solution-unique-name
@@ -28,14 +44,6 @@ jobs:
         with:
           xml-file: package/Other/Solution.xml
           xpath: "//ImportExportXml/SolutionManifest/UniqueName"
-
-      - name: Update Solution Version
-        run: |
-          $version = "${{env.majorVersion}}.${{env.minorVersion}}.${{ env.buildVersion }}"
-          $xml = [xml](Get-Content package/other/Solution.xml)
-          $xml.ImportExportXml.SolutionManifest.Version = $version
-          $xml.Save("package/other/Solution.xml")
-        shell: pwsh
 
       - name: Get Solution Version
         id: solution-version
