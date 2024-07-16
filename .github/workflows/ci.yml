@@ -32,6 +32,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./build/dataverse_solution*.zip
-          asset_name: dataverse_solution.zip
+          asset_path: ./build/dataverse_solution_managed.zip
+          asset_name: dataverse_solution_managed.zip
           asset_content_type: application/zip
