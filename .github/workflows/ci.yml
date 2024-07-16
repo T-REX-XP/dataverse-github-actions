@@ -26,18 +26,6 @@ jobs:
           solution-folder: './package'
           solution-type: 'Managed'
 
-      - name: Create release on GitHub
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: "Release ${{ github.ref }}"
-          body: |
-            This release includes the following changes:
-          draft: false
-          prerelease: false
-
       - name: Upload built solution to release
         uses: actions/upload-release-asset@v1
         env:
