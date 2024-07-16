@@ -18,22 +18,16 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Cache npm dependencies
-        uses: actions/cache@v2
+      - name: Install Power Platform Tools
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Pack Solution
+        uses: microsoft/powerplatform-actions/unpack-solution@v1
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install Power Platform CLI
-        run: |
-          npm install -g pac
-
-      - name: Build Dataverse Solution
-        run: |
-          mkdir -p build
-          pac solution pack --zipfile build/dataverse_solution.zip --folder ./package --packagetype Managed
+          solution-file: './build/dataverse_solution_managed.zip'
+          solution-folder: './package'
+          solution-type: 'Managed'
+          # overwrite-files: true
 
       - name: Create release on GitHub
         uses: actions/create-release@v1
@@ -54,6 +48,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/dataverse_solution.zip
+          asset_path: ./build/dataverse_solution*.zip
           asset_name: dataverse_solution.zip
           asset_content_type: application/zip
