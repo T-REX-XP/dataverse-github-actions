@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CanvasApp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>yn_clockifymain_ba5c7</Name>
+  <AppVersion>2024-03-16T19:15:27Z</AppVersion>
+  <Status>Ready</Status>
+  <CreatedByClientVersion>3.24031.25.0</CreatedByClientVersion>
+  <MinClientVersion>3.24031.25.0</MinClientVersion>
+  <Tags>{"primaryDeviceWidth":"2047","primaryDeviceHeight":"823","supportsPortrait":"true","supportsLandscape":"true","primaryFormFactor":"Tablet","showStatusBar":"false","publisherVersion":"3.24031.25","minimumRequiredApiVersion":"2.2.0","hasComponent":"false","hasUnlockedComponent":"false","isUnifiedRootApp":"false","offlineLargeFilesSupport":"false","sienaVersion":"20240316T190623Z-3.24031.25.0"}</Tags>
+  <IsCdsUpgraded>0</IsCdsUpgraded>
+  <GalleryItemId xsi:nil="true"></GalleryItemId>
+  <BackgroundColor>RGBA(0,176,240,1)</BackgroundColor>
+  <DisplayName>ClockifyMain</DisplayName>
+  <Description xsi:nil="true"></Description>
+  <CommitMessage xsi:nil="true"></CommitMessage>
+  <Publisher xsi:nil="true"></Publisher>
+  <AuthorizationReferences>[]</AuthorizationReferences>
+  <ConnectionReferences>{"a8927cab-d50f-4d19-8169-18c5ce8920e3":{"id":"/providers/microsoft.powerapps/apis/shared_clockify-5fdf4cd6bfa587ab83-5f10c4b0412a6b63cb","displayName":"Clockify","iconUri":"https://prodapiicons.cdn.powerappscdn.net/20240316t000000za0977e2860a94542a9ebe509b102b8ab/customconnectoricon.jpg","dataSources":["Clockify"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard","actions":["GetWorkspaces","GetUsersInWorkspace","GetAllInvoicesOnWorkspace","GetInvoiceById"],"isCustomApiSolutionAware":false}}</ConnectionReferences>
+  <DatabaseReferences>{}</DatabaseReferences>
+  <AppComponents>[]</AppComponents>
+  <AppComponentDependencies>[]</AppComponentDependencies>
+  <CanConsumeAppPass>1</CanConsumeAppPass>
+  <CanvasAppType>2</CanvasAppType>
+  <BypassConsent>0</BypassConsent>
+  <AdminControlBypassConsent>0</AdminControlBypassConsent>
+  <EmbeddedApp xsi:nil="true"></EmbeddedApp>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <CdsDependencies>{"cdsdependencies":[]}</CdsDependencies>
+  <IsCustomizable>1</IsCustomizable>
+  <BackgroundImageUri>/CanvasApps/yn_clockifymain_ba5c7_BackgroundImageUri</BackgroundImageUri>
+  <DocumentUri>/CanvasApps/yn_clockifymain_ba5c7_DocumentUri.msapp</DocumentUri>
+  <AdditionalUris>
+    <AdditionalUri>/CanvasApps/yn_clockifymain_ba5c7_AdditionalUris0_identity.json</AdditionalUri>
+  </AdditionalUris>
+</CanvasApp>

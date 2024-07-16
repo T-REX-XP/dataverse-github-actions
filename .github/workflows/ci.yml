@@ -1,0 +1,59 @@
+name: Build Dataverse Package
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Power Platform CLI
+        run: |
+          npm install -g pac
+
+      - name: Build Dataverse Solution
+        run: |
+          mkdir -p build
+          pac solution pack --zipfile build/dataverse_solution.zip --folder ./package --packagetype Managed
+
+      - name: Create release on GitHub
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: "Release ${{ github.ref }}"
+          body: |
+            This release includes the following changes:
+            - <list of changes>
+          draft: false
+          prerelease: false
+
+      - name: Upload built solution to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/dataverse_solution.zip
+          asset_name: dataverse_solution.zip
+          asset_content_type: application/zip
