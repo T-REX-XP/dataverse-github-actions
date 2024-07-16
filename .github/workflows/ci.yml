@@ -23,7 +23,7 @@ jobs:
         id: parse_version
         run: |
           $tag = "${{ github.ref_name }}"
-          if ($tag -match "v(\d+)\.(\d+)\.(\d+)") {
+          if ($tag -match "v.(\d+)\.(\d+)\.(\d+)") {
             echo "##[set-output name=major;]$($matches[1])"
             echo "##[set-output name=minor;]$($matches[2])"
             echo "##[set-output name=patch;]$($matches[3])"
