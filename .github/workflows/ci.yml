@@ -33,7 +33,7 @@ jobs:
         run: |
           $version = "${{env.majorVersion}}.${{env.minorVersion}}.${{ env.buildVersion }}"
           $xml = [xml](Get-Content package/other/Solution.xml)
-          $xml.Solution.Version = $version
+          $xml.ImportExportXml.SolutionManifest.Version = $version
           $xml.Save("package/other/Solution.xml")
         shell: pwsh
 
