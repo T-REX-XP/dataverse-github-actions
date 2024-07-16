@@ -31,6 +31,7 @@ jobs:
         shell: pwsh
 
       - name: Update Solution Version
+        id: update_version
         run: |
           $version = "${{ steps.parse_version.outputs.major }}.${{ steps.parse_version.outputs.minor }}.${{ steps.parse_version.outputs.patch }}.${{ env.buildVersion }}"
           Write-Host "##[set-output name=version;]$version"
@@ -54,17 +55,40 @@ jobs:
           xml-file: package/Other/Solution.xml
           xpath: "//ImportExportXml/SolutionManifest/Version"
 
-      - name: Pack Solution
+      - name: Pack Solution Managed
         uses: microsoft/powerplatform-actions/pack-solution@v1
+        env: 
+          fileName: "${{ steps.solution-unique-name.outputs.info }}_${{ steps.solution-version.outputs.info }}_managed.zip"
         with:
-          solution-file: "./build/${{ steps.solution-unique-name.outputs.info }}_${{ steps.solution-version.outputs.info }}_managed.zip"
+          solution-file: "./build/${{ env.fileName }}"
           solution-folder: "./package"
           solution-type: "Managed"
 
-      - name: Upload built solution to release
+      - name: Pack Solution Unmanaged
+        uses: microsoft/powerplatform-actions/pack-solution@v1
+        env: 
+          fileName: "${{ steps.solution-unique-name.outputs.info }}_${{ steps.solution-version.outputs.info }}.zip"
+        with:
+          solution-file: "./build/${{ env.fileName }}"
+          solution-folder: "./package"
+          solution-type: "Unmanaged"
+
+      - name: Upload built Managed solution to release
         uses: actions/upload-release-asset@v1
+        env: 
+          fileName: "${{ steps.solution-unique-name.outputs.info }}_${{ steps.solution-version.outputs.info }}_managed.zip"
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./build/${{ steps.solution-unique-name.outputs.info }}_${{ steps.solution-version.outputs.info }}_managed.zip
-          asset_name: ${{ steps.solution-unique-name.outputs.info }}_${{ steps.solution-version.outputs.info }}_managed.zip
+          asset_path: "./build/${{ env.fileName}}"
+          asset_name: ${{ env.fileName}}
+          asset_content_type: application/zip
+
+      - name: Upload built unmanaged solution to release
+        uses: actions/upload-release-asset@v1
+        env: 
+          fileName: "${{ steps.solution-unique-name.outputs.info }}_${{ steps.solution-version.outputs.info }}.zip"
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: "./build/${{ env.fileName}}"
+          asset_name: ${{ env.fileName}}
           asset_content_type: application/zip
