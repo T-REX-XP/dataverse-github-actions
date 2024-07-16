@@ -1,9 +1,12 @@
 name: Build Dataverse Package
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  release:
+    types: [published]
+# on:
+#   push:
+#     tags:
+#       - 'v*.*.*'
 
 jobs:
   build:
@@ -32,7 +35,6 @@ jobs:
           release_name: "Release ${{ github.ref }}"
           body: |
             This release includes the following changes:
-            - <list of changes>
           draft: false
           prerelease: false
 
@@ -41,7 +43,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./build/dataverse_solution*.zip
           asset_name: dataverse_solution.zip
           asset_content_type: application/zip
